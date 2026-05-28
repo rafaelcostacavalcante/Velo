@@ -1,0 +1,9 @@
+Abre el proyecto en el IDE
+cursor .
+
+Instala las dependencias 
+yarn install
+
+Arrancar en local
+yarn dev
+
