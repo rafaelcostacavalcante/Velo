@@ -19,7 +19,7 @@ test('Deve consultar pedido', async ({ page }) => {
   await page.getByTestId('search-order-button').click()
   
   // Assert
-  await expect(page.getByTestId('order-result-id')).toBeVisible({timeout: 10000})
+  await expect(page.getByTestId('order-result-id')).toBeVisible()
   await expect(page.getByTestId('order-result-id')).toContainText('VLO-LAOTEO')
 
   await expect(page.getByTestId('order-result-status')).toBeVisible()
