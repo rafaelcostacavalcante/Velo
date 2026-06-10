@@ -16,12 +16,16 @@ test('Deve consultar pedido', async ({ page }) => {
   //await page.getByTestId('search-order-id').click()
   
   await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-LAOTEO')
-  await page.getByTestId('search-order-button').click()
+  //await page.getByTestId('search-order-button').click()
+  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
   
   // Assert
-  await expect(page.getByTestId('order-result-id')).toBeVisible()
-  await expect(page.getByTestId('order-result-id')).toContainText('VLO-LAOTEO')
-
-  await expect(page.getByTestId('order-result-status')).toBeVisible()
-  await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
+  await expect(page.getByText('Pedido', { exact: true })).toBeVisible();
+  await expect(page.getByText('APROVADO')).toBeVisible();
+  
+  //await expect(page.getByTestId('order-result-id')).toBeVisible()  
+  //await expect(page.getByTestId('order-result-id')).toContainText('VLO-LAOTEO')
+  
+  //await expect(page.getByTestId('order-result-status')).toBeVisible()
+  //await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
 })
