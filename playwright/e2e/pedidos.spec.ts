@@ -1,73 +1,64 @@
 import { test, expect } from '@playwright/test'
 
+import { gerarCodigoPedido } from '../support/helpers'
+
+
 // AAA - Arrange, Act, Assert
 // Arrange - Preparar o cenário
 // Act - Executar a ação
 // Assert - Verificar o resultado
 
-test('Deve consultar pedido', async ({ page }) => {
 
-  // Test data
-  const order = 'VLO-LAOTEO'
+test.describe('Consultar Pedido', () => {
 
-  // Arrange
-  await page.goto('http://localhost:5173/')
-  await expect(page.getByTestId('hero-section').getByRole('heading', { name: 'Velô Sprint' })).toBeVisible()
-  await page.getByRole('link', { name: 'Consultar Pedido' }).click()
-  await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
-  
-  // Act
-  //await page.getByTestId('search-order-id').click()
-  //await page.getByTestId('search-order-button').click()
+  test.beforeEach(async ({ page }) => {
+    // Arrange
+    await page.goto('http://localhost:5173/')
+    await expect(page.getByTestId('hero-section').getByRole('heading', { name: 'Velô Sprint' })).toBeVisible()
 
-  await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order)  
-  await page.getByRole('button', { name: 'Buscar Pedido' }).click()
-  
-  // Assert
+    await page.getByRole('link', { name: 'Consultar Pedido' }).click()
+    await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
+  })
 
-  // Xpha
-  //const orderCode = page.locator('//p[text()="Pedido"]/ .. //p[text()="VLO-6E2J20"]')
-  //await expect(orderCode).toBeVisible({timeout: 10_000})
+  test('Deve consultar pedido', async ({ page }) => {
 
-  const containerPedido = page.getByRole('paragraph')
-  .filter({hasText: /^Pedido$/})
-  .locator(' .. ') //Sobe para o elemento pai (a div que agrupa ambos)
+    // Test data
+    const order = 'VLO-LAOTEO'
 
-  await expect(containerPedido).toContainText(order, { timeout: 10_000 })  
-  await expect(page.getByText('APROVADO')).toBeVisible()
- 
-})
+    // Act
+    //await page.getByTestId('search-order-id').click()
+    //await page.getByTestId('search-order-button').click()
 
-test('Deve mostrar mensagem de erro quando o pedido nao é encontrado', async ({page}) => {
+    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order)
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
-  const order = 'VLO-ABC123'
-   // Arrange
-   await page.goto('http://localhost:5173/')
-   await expect(page.getByTestId('hero-section').getByRole('heading', { name: 'Velô Sprint' })).toBeVisible()
+    // Assert
 
-   await page.getByRole('link', { name: 'Consultar Pedido' }).click()
-   await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
+    // Xpha
+    //const orderCode = page.locator('//p[text()="Pedido"]/ .. //p[text()="VLO-6E2J20"]')
+    //await expect(orderCode).toBeVisible({timeout: 10_000})
 
-   await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order)  
-   await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+    const containerPedido = page.getByRole('paragraph')
+      .filter({ hasText: /^Pedido$/ })
+      .locator(' .. ') //Sobe para o elemento pai (a div que agrupa ambos)
 
-   //await expect(page.locator('#root')).toContainText('Pedido não encontrado')
-   //await expect(page.locator('#root')).toContainText('Verifique o número do pedido e tente novamente')
+    await expect(containerPedido).toContainText(order, { timeout: 10_000 })
+    await expect(page.getByText('APROVADO')).toBeVisible()
 
-  //  const title = page.getByRole('heading', {name: 'Pedido não encontrado', level: 3})
-  //  await expect(title).toBeVisible()
+  })
 
+  test('Deve mostrar mensagem de erro quando o pedido nao é encontrado', async ({ page }) => {
+
+    const order = gerarCodigoPedido()
    
-   //const message = page.locator('//p[text()="Verifique o número do pedido e tente novamente"]')
-   //await expect(message).toBeVisible()
+    await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order)
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
-   //const message = page.locator('p', {hasText: 'Verifique o número do pedido e tente novamente'})
-   //await expect(message).toBeVisible()
-
-   await expect(page.locator('#root')).toMatchAriaSnapshot(`
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
     - img
     - heading "Pedido não encontrado" [level=3]
     - paragraph: Verifique o número do pedido e tente novamente
     `);
 
+  })
 })
