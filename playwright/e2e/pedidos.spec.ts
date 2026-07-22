@@ -50,7 +50,7 @@ test.describe('Consultar Pedido', () => {
   test('Deve mostrar mensagem de erro quando o pedido nao é encontrado', async ({ page }) => {
 
     const order = gerarCodigoPedido()
-   
+
     await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(order)
     await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
