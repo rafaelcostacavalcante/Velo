@@ -36,7 +36,7 @@ npm install
 npm run dev
 ```
 
-Acesse: `http://localhost:8080`
+Acesse: `http://localhost:5173`
 
 ---
 
