@@ -1,13 +1,13 @@
 import { Page, Locator, expect } from '@playwright/test'
 
-export type OrderStatus = 'APROVADO' | 'REPROVADO' | 'EM ANALISE'
+type OrderStatus = 'APROVADO' | 'REPROVADO' | 'EM ANALISE'
 
 // Cor e ícone esperados para cada status
 // As classes são derivadas: bg-{cor}-100, text-{cor}-700 e lucide-{icone}
 const STATUS_STYLES: Record<OrderStatus, { color: string; icon: string }> = {
   APROVADO: { color: 'green', icon: 'circle-check-big' },
   REPROVADO: { color: 'red', icon: 'circle-x' },
-  'EM ANALISE': { color: 'amber', icon: 'clock' },
+  'EM ANALISE': { color: 'amber', icon: 'circle-x' },
 }
 
 export class OrderLockupPage {
@@ -22,18 +22,20 @@ export class OrderLockupPage {
   orderCard(code: string): Locator {
     return this.page.getByTestId(`order-result-${code}`)
   }
-
+  
   // Badge de status dentro do card do pedido
   statusBadge(code: string, status: OrderStatus): Locator {
-    return this.orderCard(code).getByRole('status').filter({ hasText: status })
+    return this.orderCard(code).getByRole('status')
   }
 
-  // Valida texto, cores e ícone do badge de acordo com o status
+  // Valida texto, cores e ícone do badge de acordo com o status  
+
   async validateStatusBadge(code: string, status: OrderStatus) {
     const { color, icon } = STATUS_STYLES[status]
     const badge = this.statusBadge(code, status)
 
     await expect(badge).toBeVisible()
+    await expect(badge).toHaveText(status)
     await expect(badge).toHaveClass(new RegExp(`bg-${color}-100`))
     await expect(badge).toHaveClass(new RegExp(`text-${color}-700`))
     await expect(badge.locator('svg')).toHaveClass(new RegExp(`lucide-${icon}`))

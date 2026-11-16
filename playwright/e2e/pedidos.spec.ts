@@ -46,6 +46,9 @@ test.describe('Consultar Pedido', () => {
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
+      - status:
+        - img
+        - text: ${order.status}
       - img "Velô Sprint"
       - paragraph: Modelo
       - paragraph: ${order.model}
@@ -98,6 +101,9 @@ test.describe('Consultar Pedido', () => {
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
+      - status:
+        - img
+        - text: ${order.status}
       - img "Velô Sprint"
       - paragraph: Modelo
       - paragraph: ${order.model}
@@ -150,6 +156,9 @@ test.describe('Consultar Pedido', () => {
       - img
       - paragraph: Pedido
       - paragraph: ${order.number}
+      - status:
+        - img
+        - text: ${order.status}
       - img "Velô Sprint"
       - paragraph: Modelo
       - paragraph: ${order.model}
@@ -185,7 +194,6 @@ test.describe('Consultar Pedido', () => {
     await expect(page.locator('#root')).toMatchAriaSnapshot(`
       - img
       - heading "Pedido não encontrado" [level=3]
-      - paragraph: Verifique o número do pedido e tente novamente
-    `)
+      - paragraph: Verifique o número do pedido e tente novamente`)
   })
 })

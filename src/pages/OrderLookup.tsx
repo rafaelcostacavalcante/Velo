@@ -36,6 +36,29 @@ const colorLabels: Record<ExteriorColor, string> = {
   'midnight-black': 'Midnight Black',
 };
 
+const getStatusBadge = (status: string) => {
+  if (status === 'APROVADO') {
+    return { className: 'bg-green-100 text-green-700', Icon: CheckCircle }
+  }
+  if (status === 'REPROVADO') {
+    return { className: 'bg-red-100 text-red-700', Icon: XCircle }
+  }
+  return { className: 'bg-amber-100 text-amber-700', Icon: XCircle }
+}
+
+const StatusBadge = ({ status }: { status: string }) => {
+  const { className, Icon } = getStatusBadge(status)
+  return (
+    <div
+      role="status"
+      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${className}`}
+    >
+      <Icon className="w-4 h-4" />
+      {status}
+    </div>
+  )
+}
+
 const OrderLookup = () => {
   const [orderId, setOrderId] = useState('');
   const [searchedOrder, setSearchedOrder] = useState<Order | null>(null);
@@ -145,21 +168,7 @@ const OrderLookup = () => {
                     </p>
                   </div>
                 </div>
-                <div
-                  //data-testid="order-result-status"
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${
-                    searchedOrder.status === 'APROVADO'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-red-100 text-red-700'
-                  }`}
-                >
-                  {searchedOrder.status === 'APROVADO' ? (
-                    <CheckCircle className="w-4 h-4" />
-                  ) : (
-                    <XCircle className="w-4 h-4" />
-                  )}
-                  {searchedOrder.status}
-                </div>
+                <StatusBadge status={searchedOrder.status} />
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
